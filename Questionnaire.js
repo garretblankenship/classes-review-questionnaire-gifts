@@ -4,6 +4,7 @@
 //has a method on the class to add
 //a question object to the array
 const Question = require("./Question");
+const readLineSync = require("readline-sync");
 
 class Questionnaire {
     constructor() {
@@ -36,11 +37,24 @@ class Questionnaire {
         }       
     }
 
-    //add another method named run
-        //loop through the questions in the question list
-        //ask the user the question
-        //retrieve their response
-        //console.log their response
+    run() {
+        const queries = [];
+        
+        for (let question of this.questions) {
+            const {text, options} = question;
+
+            const values = options.map((response) => {
+                return response.value;
+            });
+
+            const index = readLineSync.keyInSelect(values, text, { cancel: false });
+            const query = options[index].query;
+            
+            queries.push(query);
+        }
+
+        return queries;
+    }
 }
 
 module.exports = Questionnaire;
