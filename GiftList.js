@@ -6,7 +6,6 @@ class GiftList {
     constructor(queries) {
         this.queries = queries;
         this.list = [];
-        this.getGiftsFromQueries();
     }
 
     addGift(gift) {
@@ -32,17 +31,19 @@ class GiftList {
             for(let response of responses) {
                 const { results } = response.data;
                 const indexes = randomDistinctNumbers(results.length);
-
+                this.createGiftsFromResultsIndexes(indexes, results);
             }
         } catch(error) {
             console.log(error);
         }
-          
+        
+        return this;
     }
     
     createGiftsFromResultsIndexes(indexes, results) {
         for(let index of indexes) {
-            let {} = results[index];
+            let {title, description, price } = results[index];
+            this.addGift(new Gift(title, description, price));
         }
     }
 }
